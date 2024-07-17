@@ -1,8 +1,8 @@
 import * as THREE from "three";
-import { FBXLoader } from '/loaders/FBXLoader.js';
-import { OrbitControls } from '/controls/OrbitControls.js';
-import { GLTFLoader } from '/loaders/GLTFLoader.js';
-import { RGBELoader } from '/loaders/RGBELoader.js';
+import { FBXLoader } from './loaders/FBXLoader.js';
+import { OrbitControls } from './node_modules/three/examples/jsm/controls/OrbitControls.js';
+import { GLTFLoader } from './loaders/loaders/GLTFLoader.js';
+import { RGBELoader } from './loaders/RGBELoader.js';
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 const w = window.innerWidth;
@@ -28,6 +28,7 @@ controls.screenSpacePanning = false;
 controls.minDistance = 0.1;
 controls.maxDistance = 10;
 controls.maxPolarAngle = Math.PI / 2;
+
 
 // Load the HDRI environment map
 const rgbeLoader = new RGBELoader();
@@ -104,9 +105,28 @@ camera.add(listener);
 // Create a video element
 const video = document.createElement('video');
 video.src = './Field Music - Orion From The Street (Official Video).mp4';
-video.loop = true;
 video.muted = false;
 video.play();
+
+ // Flag to check if the video has started
+ var videoStarted = false;
+
+ // Function to start video
+ function startVideo() {
+     if (!videoStarted) {
+         video.play().then(() => {
+             videoStarted = true;
+             console.log('Video started');
+
+        video.loop = true;
+         }).catch((error) => {
+             console.error('Error trying to play video:', error);
+         });
+     }
+ }
+
+ // Listen for control events to start the video
+ controls.addEventListener('start', startVideo);
 
 // Create a video texture
 const videoTexture = new THREE.VideoTexture(video);
