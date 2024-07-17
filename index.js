@@ -1,8 +1,8 @@
 import * as THREE from "three";
-import { FBXLoader } from './loaders/FBXLoader.js';
+import { FBXLoader } from './node_modules/three/examples/jsm/loaders/FBXLoader.js';
 import { OrbitControls } from './node_modules/three/examples/jsm/controls/OrbitControls.js';
-import { GLTFLoader } from './loaders/loaders/GLTFLoader.js';
-import { RGBELoader } from './loaders/RGBELoader.js';
+import { GLTFLoader } from './node_modules/three/examples/jsm/loaders/GLTFLoader.js';
+import { RGBELoader } from './node_modules/three/examples/jsm/loaders/RGBELoader.js';
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 const w = window.innerWidth;
