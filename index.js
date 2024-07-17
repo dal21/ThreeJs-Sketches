@@ -1,8 +1,8 @@
 import * as THREE from "three";
-import { FBXLoader } from '../node_modules/three/examples/jsm/loaders/FBXLoader.js';
-import { OrbitControls } from '../node_modules/three/examples/jsm/controls/OrbitControls.js';
-import { GLTFLoader } from '../node_modules/three/examples/jsm/loaders/GLTFLoader.js';
-import { RGBELoader } from '../node_modules/three/examples/jsm/loaders/RGBELoader.js';
+import { FBXLoader } from '/node_modules/three/examples/jsm/loaders/FBXLoader.js';
+import { OrbitControls } from '/node_modules/three/examples/jsm/controls/OrbitControls.js';
+import { GLTFLoader } from '/node_modules/three/examples/jsm/loaders/GLTFLoader.js';
+import { RGBELoader } from '/node_modules/three/examples/jsm/loaders/RGBELoader.js';
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 const w = window.innerWidth;
@@ -103,7 +103,7 @@ camera.add(listener);
 
 // Create a video element
 const video = document.createElement('video');
-video.src = '../Field Music - Orion From The Street (Official Video).mp4';
+video.src = './Field Music - Orion From The Street (Official Video).mp4';
 video.loop = true;
 video.muted = false;
 video.play();
@@ -117,7 +117,7 @@ const videoMaterial = new THREE.MeshStandardMaterial({
     map: videoTexture,
     emissive: 0xffffff,
     emissiveMap: videoTexture,
-    emissiveIntensity: 1.5
+    emissiveIntensity: 1
 });
 const videoPlane = new THREE.Mesh(videoGeometry, videoMaterial);
 videoPlane.position.set(-0.165, -0.130, 0.0445);
@@ -164,6 +164,14 @@ animatedMesh1.rotation.set(0, 1.5, 0);
 animatedMesh1.scale.set(0.5, 0.5, 0.5);
 scene.add(animatedMesh1);
 
+const animationGeometry5 = new THREE.PlaneGeometry(1, 1);
+
+const animatedMesh5 = new THREE.Mesh(animationGeometry1, animationMaterial1);
+animatedMesh5.position.set(0.35, -0.1, -0.1);
+animatedMesh5.rotation.set(0, 0, 0);
+animatedMesh5.scale.set(0.5, 0.5, 0.5);
+scene.add(animatedMesh5);
+
 // Texture animation setup for the second plane
 const manager2 = new THREE.LoadingManager();
 const textureLoader2 = new THREE.TextureLoader(manager2);
@@ -199,11 +207,113 @@ let currentFrame2 = 0;
 let delayCounter1 = delayDuration;
 let delayCounter2 = delayDuration2;
 
+
+const pointLight = new THREE.PointLight(0xffffff, 1);
+            pointLight.position.set(5, 5, 5);
+        scene.add(pointLight);
+
+        // Sphere geometry and emissive material
+        const geometry3 = new THREE.SphereGeometry(0.025, 8, 8);
+        const material3 = new THREE.MeshStandardMaterial({ color: 0xff0000, emissive: 0xff0000, emissiveIntensity: 1 });
+
+        // Number of instances
+        const count2 = 10;
+        const instancedMesh = new THREE.InstancedMesh(geometry3, material3, count2);
+        scene.add(instancedMesh);
+
+        // Light representation geometry and material
+        const lightGeometry = new THREE.SphereGeometry(0.01, 8, 8);
+        const lightMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+
+        // Animation variables
+        const clock = new THREE.Clock();
+        const positions = [];
+        const lights = [];  // Array to hold point lights
+        const lightSpheres = [];  // Array to hold light representation spheres
+
+ 
+// Initialize instance positions
+for (let i = 0; i < count2; i++) {
+    const x = (Math.random() - 0.25) * 1.3;
+    const y = (Math.random() - 0.25) * 1.3;
+    const z = (Math.random() - 0.25) * 0.25;
+    positions.push({ x, y, z });
+
+    // Create and position point light
+    const pointLightInstance = new THREE.PointLight(0xff0000, 0.25, 0.25);
+    pointLightInstance.position.set(x, y, z);
+    scene.add(pointLightInstance);
+    lights.push(pointLightInstance); // Add to lights array
+
+    // Create and position light representation sphere
+    const lightSphere = new THREE.Mesh(lightGeometry, lightMaterial);
+    lightSphere.position.set(x, y, z);
+    scene.add(lightSphere);
+    lightSpheres.push(lightSphere);
+}
+// Translation vector
+const translation = new THREE.Vector3(-0.52, -0.2, -0.55); // Adjust this vector to move the position of all spheres
+
+
+// Initialize the curve for animation
+const points = [
+    new THREE.Vector3(0.1, -0.3, 0.8),
+    new THREE.Vector3(0.2, -0.3, 0.7),
+    new THREE.Vector3(0.2, -0.3, 0.6),
+    new THREE.Vector3(0.1, -0.33, 0.5),
+    new THREE.Vector3(0.0, -0.35, 0.4),
+    new THREE.Vector3(-0.1, -0.35, 0.4),
+    new THREE.Vector3(-0.2, -0.35, 0.5),
+    new THREE.Vector3(-0.2, -0.33, 0.6),
+    new THREE.Vector3(-0.1, -0.3, 0.7),
+    new THREE.Vector3(0, -0.3, 0.8),
+];
+
+const curve3 = new THREE.CatmullRomCurve3(points, true);
+
+const loader3 = new GLTFLoader();
+const models = []; // Declare the models array
+const instanceCount = 3; // Number of instances
+
+loader3.load('./VHS.gltf', (gltf) => {
+    for (let i = 0; i < instanceCount; i++) {
+        const model1 = gltf.scene.clone(); // Clone the model for each instance
+        model1.position.set(i * 0.5, 0, 0); // Spread out instances
+        scene.add(model1);
+        models.push(model1); // Add the model to the models array
+
+    }
+});
+
+const progress = new Array(instanceCount).fill(0); // Progress for each instance
+
+
 manager1.onLoad = manager2.onLoad = function() {
     console.log('All textures loaded');
 
     function animate() {
         requestAnimationFrame(animate);
+
+        const time = clock.getElapsedTime();
+
+         // Update instance positions, lights, and light spheres
+         for (let i = 0; i < count2; i++) {
+            const { x, y, z } = positions[i];
+            const bobbing = Math.sin(time * 2 + i) * 0.1;
+
+            const matrix = new THREE.Matrix4();
+            // Apply translation vector
+            matrix.setPosition(x + translation.x, y + bobbing + translation.y, z + translation.z);
+            instancedMesh.setMatrixAt(i, matrix);
+
+            // Update light position with translation
+            lights[i].position.set(x + translation.x, y + bobbing + translation.y, z + translation.z);
+
+            // Update light sphere position with translation
+            lightSpheres[i].position.set(x + translation.x, y + bobbing + translation.y, z + translation.z);
+        }
+        instancedMesh.instanceMatrix.needsUpdate = true;
+
 
         // Update controls
         controls.update();
@@ -250,9 +360,21 @@ manager1.onLoad = manager2.onLoad = function() {
             }
         }
 
-        // Render scene
-        renderer.render(scene, camera);
-    }
+
+        models.forEach((model, index) => {
+            const totalAnimationTime = 10;
+            const progress = (time + index * (totalAnimationTime / instanceCount)) % totalAnimationTime;
+            const normalizedProgress = progress / totalAnimationTime;
+            const point = curve3.getPoint(normalizedProgress);
+            model.position.copy(point);
+    
+            // Smooth rotation or any other effect
+            model.rotation.y += 0.01;
+    });
+    
+    // Render the scene
+    renderer.render(scene, camera);
+}
 
     animate();
 };
