@@ -421,6 +421,8 @@ manager2.onLoad = function() {
 }
 
     animate();
+
+    const clock = new THREE.Clock();
 };
 
 // Log the scene and camera to verify they are set up correctly
