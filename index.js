@@ -33,7 +33,7 @@ controls.maxPolarAngle = Math.PI / 2;
 
 // Load the HDRI environment map
 const rgbeLoader = new RGBELoader();
-rgbeLoader.load('../stars_4k.hdr', (texture) => {
+rgbeLoader.load('./stars_4k.hdr', (texture) => {
     texture.mapping = THREE.EquirectangularRefractionMapping;
     scene.background = texture;
     scene.environment = texture;
@@ -147,7 +147,7 @@ scene.add(videoPlane);
 
 // Load the GLTF model
 const loader = new GLTFLoader();
-loader.load('../FMAR_TV_TEST_10.gltf', function (gltf) {
+loader.load('./FMAR_TV_TEST_10.gltf', function (gltf) {
     gltf.scene.scale.multiplyScalar(10 / 1);
     gltf.scene.position.x = 0;
     gltf.scene.position.z = 0;
@@ -168,7 +168,7 @@ const textures1 = [];
 const numImages1 = 88;
 
 for (let i = 0; i < numImages1; i++) {
-    textures1.push(textureLoader1.load(`../Starshape/Starshape_${i}.png`));
+    textures1.push(textureLoader1.load(`./Starshape/Starshape_${i}.png`));
 }
 
 const animationGeometry1 = new THREE.PlaneGeometry(1, 1);
@@ -200,7 +200,7 @@ const textures2 = [];
 const numImages2 = 146;
 
 for (let i = 0; i < numImages2; i++) {
-    textures2.push(textureLoader2.load(`../ImageSequence/Star1/PaperFolding/PaperSpin_${i}.png`));
+    textures2.push(textureLoader2.load(`./PaperSpin_${i}.png`));
 }
 
 const animationGeometry2 = new THREE.PlaneGeometry(1, 1);
