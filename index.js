@@ -1,7 +1,6 @@
 import * as THREE from "three";
 import { OrbitControls } from './controls/OrbitControls.js';
 import { GLTFLoader } from './loaders/GLTFLoader.js';
-import { RGBELoader } from './loaders/RGBELoader.js';
 
 
 
@@ -16,14 +15,13 @@ const initRenderer = () => {
     document.body.appendChild(renderer.domElement);
 };
 
-// Initialize camera
 const initCamera = () => {
     const fov = 75;
-    const aspect = window.innerWidth / window.innerHeight;
+    const aspect = width / height; // Ensure width and height are accessible
     const near = 0.1;
-    const far = 20;
+    const far = 100;
     const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-    camera.position.z = 2;
+    camera.position.set(0, 0, 2); // Adjusted camera position
     return camera;
 };
 
@@ -386,7 +384,7 @@ const clock = new THREE.Clock();
 
 
 
-    function animate() {
+function animate() {
         requestAnimationFrame(animate);
 
         const delta = clock.getDelta();
@@ -479,11 +477,14 @@ const clock = new THREE.Clock();
 
         // Render the scene
         renderer.render(scene, camera);
+    }
+
+    
     
 
     animate();
 
-};
+
 
 // Log the scene and camera to verify they are set up correctly
 console.log('Scene:', scene);
