@@ -391,8 +391,13 @@ let lastFrameTime = performance.now()
 function animate() {
         requestAnimationFrame(animate);
 
-        const delta = clock.getDelta();
-        const elapsedTime = clock.getElapsedTime();
+    // Calculate delta time
+    const now = Date.now();
+    const delta = now - lastFrameTime;
+    lastFrameTime = now; // Update lastFrameTime for the next frame
+
+    // Your existing animation logic goes here
+    const elapsedTime = clock.getElapsedTime();
 
         // Update instance positions, lights, and light spheres
         for (let i = 0; i < count2; i++) {
@@ -425,7 +430,6 @@ function animate() {
         spotLight.position.z += (Math.random() - 0.5) * jitterAmount;
 
         // Update the animation frame for textures2
-        const now = Date.now();
         const elapsedTimeFrame = now - lastFrameTime;
 
         if (elapsedTimeFrame >= frameDuration) {
