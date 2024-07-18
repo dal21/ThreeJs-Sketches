@@ -224,8 +224,8 @@ scene.traverse((node) => {
 const loader7 = new GLTFLoader();
 let mixer3; // Second mixer
 loader7.load('./Wind Turbine.gltf', function (gltf) {
-    gltf.scene.scale.multiplyScalar(10 / 1);
-    gltf.scene.position.set(0, 0.1, 0);  // Set initial position
+    gltf.scene.scale.multiplyScalar(1 / 1);
+    gltf.scene.position.set(0, 0.1, -0.05);  // Set initial position
     scene.add(gltf.scene);
      // Animation mixer to handle animations
      mixer3 = new THREE.AnimationMixer(gltf.scene);
