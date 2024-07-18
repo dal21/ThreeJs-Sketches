@@ -25,6 +25,8 @@ const initCamera = () => {
     const far = 100;
     const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
     camera.position.set(0, -0.5, 5); // Adjusted camera position
+    camera.lookAt(scene.position); // Ensure camera looks at the center of the scene
+
     return camera;
 };
 
