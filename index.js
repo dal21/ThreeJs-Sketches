@@ -29,14 +29,38 @@ controls.minDistance = 0.1;
 controls.maxDistance = 10;
 controls.maxPolarAngle = Math.PI / 2;
 
+// Create star canvas and texture
+const starCanvas = createStarCanvas(2048, 1024);
+const starTexture = new THREE.CanvasTexture(starCanvas);
+starTexture.mapping = THREE.EquirectangularReflectionMapping;
+scene.background = starTexture;
+scene.environment = starTexture;
 
-// Load JPG environment map
-const textureLoader = new THREE.TextureLoader();
-const texture = textureLoader.load('./Starpic.jpg', function (texture) {
-    texture.mapping = THREE.EquirectangularReflectionMapping;
-    scene.background = texture;
-    scene.environment = texture;
-});
+function createStarCanvas(width, height) {
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const context = canvas.getContext('2d');
+
+    // Fill the background with black
+    context.fillStyle = 'black';
+    context.fillRect(0, 0, width, height);
+
+    // Draw stars
+    const starCount = 1000;
+    for (let i = 0; i < starCount; i++) {
+        const x = Math.random() * width;
+        const y = Math.random() * height;
+        const size = Math.random() * 2;
+        const brightness = Math.random();
+        context.fillStyle = `rgba(255, 255, 255, ${brightness})`;
+        context.beginPath();
+        context.arc(x, y, size, 0, Math.PI * 2, true);
+        context.fill();
+    }
+
+    return canvas;
+}
 
 // Directional light (simulating sunlight)
 const dirLight = new THREE.DirectionalLight(0xffFA7F08, 0.8);
