@@ -198,7 +198,7 @@ scene.traverse((node) => {
 const loader6 = new GLTFLoader();
 let mixer2; // Second mixer
 loader6.load('./Vase.gltf', function (gltf) {
-    gltf.scene.scale.multiplyScalar(3 / 1);
+    gltf.scene.scale.multiplyScalar(5 / 1);
     gltf.scene.position.set(-0.5, 0, 0.5);  // Set initial position
     scene.add(gltf.scene);
      // Animation mixer to handle animations
@@ -220,8 +220,33 @@ scene.traverse((node) => {
 });    
 
 
+// Load the GLTF model
+const loader7 = new GLTFLoader();
+let mixer3; // Second mixer
+loader6.load('./Wind Turbine.gltf', function (gltf) {
+    gltf.scene.scale.multiplyScalar(2 / 1);
+    gltf.scene.position.set(0, 0.01, 0);  // Set initial position
+    scene.add(gltf.scene);
+     // Animation mixer to handle animations
+     mixer3 = new THREE.AnimationMixer(gltf.scene);
+    
+     // Play animation by name
+     const clip = THREE.AnimationClip.findByName(gltf.animations, 'Animation');
+     if (clip) {
+         mixer3.clipAction(clip).play();
+     }
+ });
+ 
 
-// Texture animation setup for the second plane
+renderer.shadowMap.enabled = true;
+scene.traverse((node) => {
+    if (node.isMesh) {
+        node.receiveShadow = true;
+    }
+});    
+
+
+// Texture animation setup for the image plane
 const manager2 = new THREE.LoadingManager();
 const textureLoader2 = new THREE.TextureLoader(manager2);
 const textures2 = [];
@@ -247,7 +272,7 @@ scene.add(animatedMesh2);
 
 // Animation management for both planes
 const frameRate = 12;
-const frameDuration = 1000 / frameRate;
+const frameDuration = 3000 / frameRate;
 const delayDuration = 0;  // Number of frames to delay the restart of the animation
 const delayDuration2 = 48;  // Number of frames to delay the restart of the animation
 let lastFrameTime = Date.now();
@@ -415,6 +440,10 @@ manager2.onLoad = function() {
         // Update the second mixer if it exists
         if (mixer2) {
             mixer2.update(delta);
+        }
+        // Update the second mixer if it exists
+        if (mixer3) {
+            mixer3.update(delta);
         }
 
         // Update controls
