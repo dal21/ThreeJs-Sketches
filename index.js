@@ -222,7 +222,20 @@ scene.traverse((node) => {
     }
 });    
 
+const instanceCount1 = 3; // Number of instances you want to create
+const winmodels = []; // Array to hold all instances
 
+// Function to create instances
+function createInstances() {
+    for (let i = 0; i < instanceCount1; i++) {
+        if (turbineModel) {
+            const instance = turbineModel.clone(); // Clone the model
+            instance.position.set(i * -0.2, 0, -0.1); // Adjust position of each instance
+            scene.add(instance); // Add instance to the scene
+            winmodels.push(instance); // Push instance to the models array
+        }
+    }
+}
 
 // Load the GLTF model
 const loader7 = new GLTFLoader();
@@ -246,20 +259,8 @@ loader7.load('./Wind Turbine.gltf', function (gltf) {
      createInstances();
  });
  
-const instanceCount1 = 3; // Number of instances you want to create
-const winmodels = []; // Array to hold all instances
 
-// Function to create instances
-function createInstances() {
-    for (let i = 0; i < instanceCount1; i++) {
-        if (turbineModel) {
-            const instance = turbineModel.clone(); // Clone the model
-            instance.position.set(i * -0.2, 0, -0.1); // Adjust position of each instance
-            scene.add(instance); // Add instance to the scene
-            winmodels.push(instance); // Push instance to the models array
-        }
-    }
-}
+
 
 renderer.shadowMap.enabled = true;
 scene.traverse((node) => {
