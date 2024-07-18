@@ -237,6 +237,18 @@ loader7.load('./Wind Turbine.gltf', function (gltf) {
      }
  });
  
+ const instanceCount1 = 3; // Number of instances you want to create
+const winmodels = []; // Array to hold all instances
+
+// Create instances
+for (let i = 0; i < instanceCount1; i++) {
+    if (turbineModel) {
+        const instance = turbineModel.clone(); // Clone the model
+        instance.position.set(i * -0.2, 0, -0.1); // Adjust position of each instance
+        scene.add(instance); // Add instance to the scene
+        winmodels.push(instance); // Push instance to the models array
+    }
+}
 
 renderer.shadowMap.enabled = true;
 scene.traverse((node) => {
@@ -361,6 +373,16 @@ loader3.load('./VHS.gltf', (gltf) => {
 const progress = new Array(instanceCount).fill(0); // Progress for each instance
 const clock = new THREE.Clock();
 
+const mixers = []; // Array to hold mixers for each instance
+models.forEach((model) => {
+    const winmixer = new THREE.AnimationMixer(model);
+    const clip = THREE.AnimationClip.findByName(model.animations, 'Bladespin');
+    if (clip) {
+        winmixer.clipAction(clip).play();
+    }
+    mixers.push(mixer);
+});
+
 manager2.onLoad = function() {
     console.log('All textures loaded');
 
@@ -441,10 +463,10 @@ manager2.onLoad = function() {
         if (mixer2) {
             mixer2.update(delta);
         }
-        // Update the second mixer if it exists
-        if (mixer3) {
-            mixer3.update(delta);
-        }
+        // Update each mixer
+          mixers.forEach((mixer) => {
+        mixer.update(delta);
+        });
 
         // Update controls
         controls.update();
