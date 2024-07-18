@@ -197,7 +197,7 @@ scene.traverse((node) => {
 const loader6 = new GLTFLoader();
 loader6.load('./Vase.gltf', function (gltf) {
     gltf.scene.scale.multiplyScalar(10 / 1);
-    gltf.scene.position.set(0, 0, 0);  // Set initial position
+    gltf.scene.position.set(-0.5, 0, 0.5);  // Set initial position
     scene.add(gltf.scene);
     // Animation mixer to handle animations
     const mixer = new THREE.AnimationMixer(gltf.scene);
