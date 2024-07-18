@@ -278,7 +278,6 @@ const pointLight = new THREE.PointLight(0xffffff, 1);
         const lightMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
 
         // Animation variables
-        const clock = new THREE.Clock();
         const positions = [];
         const lights = [];  // Array to hold point lights
         const lightSpheres = [];  // Array to hold light representation spheres
@@ -415,7 +414,7 @@ manager2.onLoad = function() {
 
     // Update the animation mixer if it exists
     if (scene.userData.mixer) {
-        const delta = clock2.getDelta();
+        const delta = clock.getDelta();
         scene.userData.mixer.update(delta);
     }    
     // Render the scene
