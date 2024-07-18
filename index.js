@@ -30,7 +30,9 @@ controls.minDistance = 0.1;
 controls.maxDistance = 10;
 controls.maxPolarAngle = Math.PI / 2;
 
-let turbineModel;
+let turbineModel; // Declare turbineModel globally
+const instanceCount1 = 3; // Number of instances you want to create
+const winmodels = []; // Array to hold all instances
 
 // Create star canvas and texture
 const starCanvas = createStarCanvas(2048, 1024);
@@ -221,9 +223,6 @@ scene.traverse((node) => {
         node.receiveShadow = true;
     }
 });    
-
-const instanceCount1 = 3; // Number of instances you want to create
-const winmodels = []; // Array to hold all instances
 
 // Function to create instances
 function createInstances() {
