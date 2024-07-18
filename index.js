@@ -223,7 +223,7 @@ scene.traverse((node) => {
 // Load the GLTF model
 const loader7 = new GLTFLoader();
 let mixer3; // Second mixer
-loader6.load('./Wind Turbine.gltf', function (gltf) {
+loader7.load('./Wind Turbine.gltf', function (gltf) {
     gltf.scene.scale.multiplyScalar(2 / 1);
     gltf.scene.position.set(0, 0.01, 0);  // Set initial position
     scene.add(gltf.scene);
