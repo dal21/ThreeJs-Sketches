@@ -6,17 +6,20 @@ import { GLTFLoader } from './loaders/GLTFLoader.js';
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 const scene = new THREE.Scene();
-const width = window.innerWidth;
-const height = window.innerHeight;
+
 
 // Initialize renderer and append to the document body
 const initRenderer = () => {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
     renderer.setSize(width, height);
     document.body.appendChild(renderer.domElement);
 };
 
 const initCamera = () => {
     const fov = 75;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
     const aspect = width / height; // Ensure width and height are accessible
     const near = 0.1;
     const far = 100;
@@ -24,6 +27,10 @@ const initCamera = () => {
     camera.position.set(0, 0, 2); // Adjusted camera position
     return camera;
 };
+
+// Initialize renderer and camera
+initRenderer();
+const camera = initCamera();
 
 // Function to handle window resizing
 const onWindowResize = () => {
@@ -38,9 +45,6 @@ const onWindowResize = () => {
 // Event listener for window resizing
 window.addEventListener('resize', onWindowResize);
 
-// Initialize renderer and camera
-initRenderer();
-const camera = initCamera();
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableRotate = true;
