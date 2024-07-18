@@ -256,7 +256,7 @@ const loader7 = new GLTFLoader();
 let mixer3; // Second mixer
 loader7.load('./Wind Turbine.gltf', function (gltf) {
     gltf.scene.scale.multiplyScalar(0.4 / 1);
-    gltf.scene.position.set(0, 0.05, -0.05);  // Set initial position
+    gltf.scene.position.set(0, 0.02, -0.05);  // Set initial position
     scene.add(gltf.scene);
 
      // Animation mixer to handle animations
