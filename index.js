@@ -2,6 +2,8 @@ import * as THREE from "three";
 import { OrbitControls } from './controls/OrbitControls.js';
 import { GLTFLoader } from './loaders/GLTFLoader.js';
 import { RGBELoader } from './loaders/RGBELoader.js';
+import { BufferGeometryUtils } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 const w = window.innerWidth;
@@ -166,7 +168,7 @@ const textures1 = [];
 const numImages1 = 88;
 
 for (let i = 0; i < numImages1; i++) {
-    textures1.push(textureLoader1.load(`../ImageSequence/Star1/Starshape/Starshape_${i}.png`));
+    textures1.push(textureLoader1.load(`../Starshape/Starshape_${i}.png`));
 }
 
 const animationGeometry1 = new THREE.PlaneGeometry(1, 1);
