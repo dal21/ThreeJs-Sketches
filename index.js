@@ -173,7 +173,18 @@ loader.load('./FMAR_TV_TEST_10.gltf', function (gltf) {
     gltf.scene.position.x = 0;
     gltf.scene.position.z = 0;
     scene.add(gltf.scene);
+ // Animation mixer to handle animations
+ const mixer = new THREE.AnimationMixer(gltf.scene);
+    
+ // Play all animations
+ gltf.animations.forEach((clip) => {
+     mixer.clipAction(clip).play();
+ });
+
+ // Store mixer for use in the animation loop
+ scene.userData.mixer = mixer;
 });
+
 
 renderer.shadowMap.enabled = true;
 scene.traverse((node) => {
@@ -186,9 +197,18 @@ scene.traverse((node) => {
 const loader6 = new GLTFLoader();
 loader6.load('./Vase.gltf', function (gltf) {
     gltf.scene.scale.multiplyScalar(10 / 1);
-    gltf.scene.position.x = 0;
-    gltf.scene.position.z = 0;
+    gltf.scene.position.set(0, 0, 0);  // Set initial position
     scene.add(gltf.scene);
+    // Animation mixer to handle animations
+    const mixer = new THREE.AnimationMixer(gltf.scene);
+    
+    // Play all animations
+    gltf.animations.forEach((clip) => {
+        mixer.clipAction(clip).play();
+    });
+
+    // Store mixer for use in the animation loop
+    scene.userData.mixer = mixer;
 });
 
 renderer.shadowMap.enabled = true;
@@ -198,6 +218,7 @@ scene.traverse((node) => {
     }
 });
 
+    
 
 
 
@@ -388,7 +409,13 @@ manager2.onLoad = function() {
             // Smooth rotation or any other effect
             model.rotation.y += 0.01;
     });
-    
+
+
+    // Update the animation mixer if it exists
+    if (scene.userData.mixer) {
+        const delta = clock.getDelta();
+        scene.userData.mixer.update(delta);
+    }    
     // Render the scene
     renderer.render(scene, camera);
 }
