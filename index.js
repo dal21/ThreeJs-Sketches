@@ -287,7 +287,7 @@ const loader8 = new GLTFLoader();
 let mixer4; // Second mixer
 loader8.load('./SunSpin.gltf', function (gltf) {
     gltf.scene.scale.multiplyScalar(5 / 1);
-    gltf.scene.position.set(-0.7, 1.4, 0);  // Set initial position
+    gltf.scene.position.set(-0.4, 1, 0);  // Set initial position
     gltf.scene.rotation.set(0, 0.7000, 0);  // Set initial position
     scene.add(gltf.scene);
      // Animation mixer to handle animations
