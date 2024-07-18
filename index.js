@@ -219,6 +219,7 @@ scene.traverse((node) => {
     }
 });
 
+const clock2 = new THREE.Clock();
     
 
 
@@ -414,7 +415,7 @@ manager2.onLoad = function() {
 
     // Update the animation mixer if it exists
     if (scene.userData.mixer) {
-        const delta = clock.getDelta();
+        const delta = clock2.getDelta();
         scene.userData.mixer.update(delta);
     }    
     // Render the scene
@@ -423,7 +424,6 @@ manager2.onLoad = function() {
 
     animate();
 
-    const clock = new THREE.Clock();
 };
 
 // Log the scene and camera to verify they are set up correctly
