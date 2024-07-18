@@ -338,7 +338,7 @@ loader3.load('./VHS.gltf', (gltf) => {
 });
 
 const progress = new Array(instanceCount).fill(0); // Progress for each instance
-
+const clock = new THREE.Clock();
 
 manager2.onLoad = function() {
     console.log('All textures loaded');
