@@ -4,6 +4,7 @@ import { GLTFLoader } from './loaders/GLTFLoader.js';
 import { RGBELoader } from './loaders/RGBELoader.js';
 
 
+
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 const w = window.innerWidth;
 const h = window.innerHeight;
@@ -28,6 +29,8 @@ controls.screenSpacePanning = false;
 controls.minDistance = 0.1;
 controls.maxDistance = 10;
 controls.maxPolarAngle = Math.PI / 2;
+
+let turbineModel;
 
 // Create star canvas and texture
 const starCanvas = createStarCanvas(2048, 1024);
@@ -219,7 +222,7 @@ scene.traverse((node) => {
     }
 });    
 
-let turbineModel;
+
 
 // Load the GLTF model
 const loader7 = new GLTFLoader();
@@ -240,21 +243,23 @@ loader7.load('./Wind Turbine.gltf', function (gltf) {
      if (clip) {
          mixer3.clipAction(clip).play();
      }
+     createInstances();
  });
  
- const instanceCount1 = 3; // Number of instances you want to create
+const instanceCount1 = 3; // Number of instances you want to create
 const winmodels = []; // Array to hold all instances
 
-// Create instances
-for (let i = 0; i < instanceCount1; i++) {
-    if (turbineModel) {
-        const instance = turbineModel.clone(); // Clone the model
-        instance.position.set(i * -0.2, 0, -0.1); // Adjust position of each instance
-        scene.add(instance); // Add instance to the scene
-        winmodels.push(instance); // Push instance to the models array
+// Function to create instances
+function createInstances() {
+    for (let i = 0; i < instanceCount1; i++) {
+        if (turbineModel) {
+            const instance = turbineModel.clone(); // Clone the model
+            instance.position.set(i * -0.2, 0, -0.1); // Adjust position of each instance
+            scene.add(instance); // Add instance to the scene
+            winmodels.push(instance); // Push instance to the models array
+        }
     }
 }
-loader7.onLoad = createInstances;
 
 renderer.shadowMap.enabled = true;
 scene.traverse((node) => {
