@@ -6,11 +6,11 @@ import { GLTFLoader } from './loaders/GLTFLoader.js';
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 const scene = new THREE.Scene();
+const width = window.innerWidth;
+const height = window.innerHeight;
 
 // Initialize renderer and append to the document body
 const initRenderer = () => {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
     renderer.setSize(width, height);
     document.body.appendChild(renderer.domElement);
 };
