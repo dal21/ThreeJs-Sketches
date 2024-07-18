@@ -30,14 +30,12 @@ controls.maxDistance = 10;
 controls.maxPolarAngle = Math.PI / 2;
 
 
-// Load the HDRI environment map
-const rgbeLoader = new RGBELoader();
-rgbeLoader.load('./stars_4k.hdr', (texture) => {
-    texture.mapping = THREE.EquirectangularRefractionMapping;
+// Load JPG environment map
+const textureLoader = new THREE.TextureLoader();
+const texture = textureLoader.load('./Starpic.jpg', function (texture) {
+    texture.mapping = THREE.EquirectangularReflectionMapping;
     scene.background = texture;
     scene.environment = texture;
-}, undefined, (error) => {
-    console.error('Error loading HDRI:', error);
 });
 
 // Directional light (simulating sunlight)
