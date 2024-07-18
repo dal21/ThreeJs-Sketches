@@ -8,11 +8,11 @@ const renderer = new THREE.WebGLRenderer({ antialias: true });
 const scene = new THREE.Scene();
 
 
+
 // Initialize renderer and append to the document body
 const initRenderer = () => {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    renderer.setSize(width, height);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio); // Adjust for device pixel ratio
     document.body.appendChild(renderer.domElement);
 };
 
@@ -40,6 +40,7 @@ const onWindowResize = () => {
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
     renderer.setSize(width, height);
+    renderer.setPixelRatio(window.devicePixelRatio); // Adjust for device pixel ratio
 };
 
 // Event listener for window resizing
