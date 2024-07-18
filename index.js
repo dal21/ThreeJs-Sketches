@@ -6,18 +6,43 @@ import { RGBELoader } from './loaders/RGBELoader.js';
 
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
-const w = window.innerWidth;
-const h = window.innerHeight;
-renderer.setSize(w, h);
-document.body.appendChild(renderer.domElement);
-
-const fov = 75;
-const aspect = w / h;
-const near = 0.1;
-const far = 20;
-const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-camera.position.z = 2;
 const scene = new THREE.Scene();
+
+// Initialize renderer and append to the document body
+const initRenderer = () => {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    renderer.setSize(width, height);
+    document.body.appendChild(renderer.domElement);
+};
+
+// Initialize camera
+const initCamera = () => {
+    const fov = 75;
+    const aspect = window.innerWidth / window.innerHeight;
+    const near = 0.1;
+    const far = 20;
+    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+    camera.position.z = 2;
+    return camera;
+};
+
+// Function to handle window resizing
+const onWindowResize = () => {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+    renderer.setSize(width, height);
+};
+
+// Event listener for window resizing
+window.addEventListener('resize', onWindowResize);
+
+// Initialize renderer and camera
+initRenderer();
+const camera = initCamera();
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableRotate = true;
@@ -228,7 +253,7 @@ const loader7 = new GLTFLoader();
 let mixer3; // Second mixer
 loader7.load('./Wind Turbine.gltf', function (gltf) {
     gltf.scene.scale.multiplyScalar(0.3 / 1);
-    gltf.scene.position.set(0, 0.1, -0.05);  // Set initial position
+    gltf.scene.position.set(0, 0, -0.05);  // Set initial position
     scene.add(gltf.scene);
 
      // Animation mixer to handle animations
@@ -253,40 +278,31 @@ scene.traverse((node) => {
 });    
 
 
-// Texture animation setup for the image plane
-const manager2 = new THREE.LoadingManager();
-const textureLoader2 = new THREE.TextureLoader(manager2);
-const textures2 = [];
-const numImages2 = 35;
 
-for (let i = 0; i < numImages2; i++) {
-    textures2.push(textureLoader2.load(`./PaperSpin_${i}.png`));
-}
+// Load the GLTF model
+const loader8 = new GLTFLoader();
+let mixer4; // Second mixer
+loader8.load('./Vase.gltf', function (gltf) {
+    gltf.scene.scale.multiplyScalar(5 / 1);
+    gltf.scene.position.set(-0.5, 0, 0.5);  // Set initial position
+    scene.add(gltf.scene);
+     // Animation mixer to handle animations
+     mixer4 = new THREE.AnimationMixer(gltf.scene);
+    
+     // Play animation by name
+     const clip = THREE.AnimationClip.findByName(gltf.animations, 'SunSpin');
+     if (clip) {
+         mixer4.clipAction(clip).play();
+     }
+ });
+ 
 
-const animationGeometry2 = new THREE.PlaneGeometry(1, 1);
-const animationMaterial2 = new THREE.MeshStandardMaterial({
-    map: textures2[0],
-    transparent: true,
-    emissive: 0xffffff,  // Set the emissive color to white
-    emissiveMap: textures2[0],  // Use the same texture for emissive map
-    emissiveIntensity: 1  // Adjust the intensity of the emissive effect
-});
-const animatedMesh2 = new THREE.Mesh(animationGeometry2, animationMaterial2);
-animatedMesh2.position.set(-0.2, 0.26, -0.15);
-animatedMesh2.rotation.set(0, 0.25, 0);
-animatedMesh2.scale.set(0.5, 0.5, 0.5);
-scene.add(animatedMesh2);
-
-// Animation management for both planes
-const frameRate = 12;
-const frameDuration = 3000 / frameRate;
-const delayDuration = 0;  // Number of frames to delay the restart of the animation
-const delayDuration2 = 48;  // Number of frames to delay the restart of the animation
-let lastFrameTime = Date.now();
-let currentFrame1 = 0;
-let currentFrame2 = 0;
-let delayCounter1 = delayDuration;
-let delayCounter2 = delayDuration2;
+renderer.shadowMap.enabled = true;
+scene.traverse((node) => {
+    if (node.isMesh) {
+        node.receiveShadow = true;
+    }
+});    
 
 
 const pointLight = new THREE.PointLight(0xffffff, 1);
@@ -369,8 +385,6 @@ const progress = new Array(instanceCount).fill(0); // Progress for each instance
 const clock = new THREE.Clock();
 
 
-manager2.onLoad = function() {
-    console.log('All textures loaded');
 
     function animate() {
         requestAnimationFrame(animate);
@@ -453,6 +467,10 @@ manager2.onLoad = function() {
            if (mixer3) {
             mixer3.update(delta);
         }
+        // Update the second mixer if it exists
+            if (mixer4) {
+            mixer4.update(delta);
+        }
   
   
 
@@ -460,7 +478,8 @@ manager2.onLoad = function() {
         controls.update();
 
         // Render the scene
-        renderer.render(scene, camera);}
+        renderer.render(scene, camera);
+    
 
     animate();
 
