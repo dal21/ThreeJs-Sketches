@@ -386,7 +386,7 @@ loader3.load('./VHS.gltf', (gltf) => {
 const progress = new Array(instanceCount).fill(0); // Progress for each instance
 const clock = new THREE.Clock();
 
-let lastFrameTime = 0:
+let lastFrameTime = 0;
 
 function animate() {
         requestAnimationFrame(animate);
