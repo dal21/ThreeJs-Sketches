@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { FBXLoader } from './loaders/FBXLoader.js';
 import { OrbitControls } from './controls/OrbitControls.js';
 import { GLTFLoader } from './loaders/GLTFLoader.js';
 import { RGBELoader } from './loaders/RGBELoader.js';
