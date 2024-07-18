@@ -2,7 +2,6 @@ import * as THREE from "three";
 import { OrbitControls } from './controls/OrbitControls.js';
 import { GLTFLoader } from './loaders/GLTFLoader.js';
 import { RGBELoader } from './loaders/RGBELoader.js';
-import { BufferGeometryUtils } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
