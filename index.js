@@ -363,6 +363,9 @@ manager2.onLoad = function() {
         }
         instancedMesh.instanceMatrix.needsUpdate = true;
 
+
+
+
         // Add noise distortion to the spotlight's intensity
         spotLight.intensity = intensity + (Math.random() - 0.5) * 0.5;
 
@@ -418,8 +421,7 @@ manager2.onLoad = function() {
         controls.update();
 
         // Render the scene
-        renderer.render
-}
+        renderer.render(scene, camera);}
 
     animate();
 
