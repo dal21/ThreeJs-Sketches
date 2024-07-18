@@ -196,16 +196,17 @@ scene.traverse((node) => {
 // Load the GLTF model
 const loader6 = new GLTFLoader();
 loader6.load('./Vase.gltf', function (gltf) {
-    gltf.scene.scale.multiplyScalar(10 / 1);
+    gltf.scene.scale.multiplyScalar(3 / 1);
     gltf.scene.position.set(-0.5, 0, 0.5);  // Set initial position
     scene.add(gltf.scene);
     // Animation mixer to handle animations
     const mixer = new THREE.AnimationMixer(gltf.scene);
     
-    // Play all animations
-    gltf.animations.forEach((clip) => {
-        mixer.clipAction(clip).play();
-    });
+// Play animation by name
+const clip = THREE.AnimationClip.findByName(gltf.animations, 'Animation');
+if (clip) {
+    mixer.clipAction(clip).play();
+}
 
     // Store mixer for use in the animation loop
     scene.userData.mixer = mixer;
