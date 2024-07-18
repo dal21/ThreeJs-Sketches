@@ -231,7 +231,7 @@ loader7.load('./Wind Turbine.gltf', function (gltf) {
      mixer3 = new THREE.AnimationMixer(gltf.scene);
     
      // Play animation by name
-     const clip = THREE.AnimationClip.findByName(gltf.animations, 'Bladespin');
+     const clip = THREE.AnimationClip.findByName(gltf.animations, 'BladeSpin');
      if (clip) {
          mixer3.clipAction(clip).play();
      }
