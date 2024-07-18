@@ -429,24 +429,7 @@ function animate() {
         spotLight.position.y += (Math.random() - 0.5) * jitterAmount;
         spotLight.position.z += (Math.random() - 0.5) * jitterAmount;
 
-        // Update the animation frame for textures2
-        const elapsedTimeFrame = now - lastFrameTime;
-
-        if (elapsedTimeFrame >= frameDuration) {
-            lastFrameTime = now;
-
-            if (currentFrame2 < numImages2) {
-                animationMaterial2.map = textures2[currentFrame2];
-                animationMaterial2.emissiveMap = textures2[currentFrame2];
-                animationMaterial2.needsUpdate = true;
-                currentFrame2++;
-            } else if (delayCounter2 > 0) {
-                delayCounter2--;
-            } else {
-                currentFrame2 = 0;
-                delayCounter2 = delayDuration;
-            }
-        }
+ 
 
         // Update models on the curve
         models.forEach((model, index) => {
