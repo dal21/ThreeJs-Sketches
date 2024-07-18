@@ -386,18 +386,17 @@ loader3.load('./VHS.gltf', (gltf) => {
 const progress = new Array(instanceCount).fill(0); // Progress for each instance
 const clock = new THREE.Clock();
 
-let lastFrameTime = performance.now()
+let lastFrameTime = 0:
 
 function animate() {
         requestAnimationFrame(animate);
 
-    // Calculate delta time
-    const now = Date.now();
-    const delta = now - lastFrameTime;
-    lastFrameTime = now; // Update lastFrameTime for the next frame
-
-    // Your existing animation logic goes here
-    const elapsedTime = clock.getElapsedTime();
+     // Calculate delta time
+     const delta = clock.getDelta();
+     lastFrameTime += delta; // Update lastFrameTime for the next frame
+ 
+     // Your existing animation logic goes here
+     const elapsedTime = clock.getElapsedTime();
 
         // Update instance positions, lights, and light spheres
         for (let i = 0; i < count2; i++) {
