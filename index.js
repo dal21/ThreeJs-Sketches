@@ -47,11 +47,11 @@ function createStarCanvas(width, height) {
     context.fillRect(0, 0, width, height);
 
     // Draw stars
-    const starCount = 1000;
+    const starCount = 300;
     for (let i = 0; i < starCount; i++) {
         const x = Math.random() * width;
         const y = Math.random() * height;
-        const size = Math.random() * 2;
+        const size = Math.random() * 0.5;
         const brightness = Math.random();
         context.fillStyle = `rgba(255, 255, 255, ${brightness})`;
         context.beginPath();
@@ -182,43 +182,30 @@ scene.traverse((node) => {
     }
 });
 
-// Texture animation setup for the first plane
-const manager1 = new THREE.LoadingManager();
-const textureLoader1 = new THREE.TextureLoader(manager1);
-const textures1 = [];
-const numImages1 = 88;
-
-for (let i = 0; i < numImages1; i++) {
-    textures1.push(textureLoader1.load(`./Starshape/Starshape_${i}.png`));
-}
-
-const animationGeometry1 = new THREE.PlaneGeometry(1, 1);
-const animationMaterial1 = new THREE.MeshStandardMaterial({
-    map: textures1[0],
-    transparent: true,
-    emissive: 0xffffff,  // Set the emissive color to white
-    emissiveMap: textures1[0],  // Use the same texture for emissive map
-    emissiveIntensity: 1.5  // Adjust the intensity of the emissive effect
+// Load the GLTF model
+const loader6 = new GLTFLoader();
+loader6.load('./Vase.gltf', function (gltf) {
+    gltf.scene.scale.multiplyScalar(10 / 1);
+    gltf.scene.position.x = 0;
+    gltf.scene.position.z = 0;
+    scene.add(gltf.scene);
 });
-const animatedMesh1 = new THREE.Mesh(animationGeometry1, animationMaterial1);
-animatedMesh1.position.set(-0.6, 0.5, 0.25);
-animatedMesh1.rotation.set(0, 1.5, 0);
-animatedMesh1.scale.set(0.5, 0.5, 0.5);
-scene.add(animatedMesh1);
 
-const animationGeometry5 = new THREE.PlaneGeometry(1, 1);
+renderer.shadowMap.enabled = true;
+scene.traverse((node) => {
+    if (node.isMesh) {
+        node.receiveShadow = true;
+    }
+});
 
-const animatedMesh5 = new THREE.Mesh(animationGeometry1, animationMaterial1);
-animatedMesh5.position.set(0.35, -0.1, -0.1);
-animatedMesh5.rotation.set(0, 0, 0);
-animatedMesh5.scale.set(0.5, 0.5, 0.5);
-scene.add(animatedMesh5);
+
+
 
 // Texture animation setup for the second plane
 const manager2 = new THREE.LoadingManager();
 const textureLoader2 = new THREE.TextureLoader(manager2);
 const textures2 = [];
-const numImages2 = 146;
+const numImages2 = 35;
 
 for (let i = 0; i < numImages2; i++) {
     textures2.push(textureLoader2.load(`./PaperSpin_${i}.png`));
@@ -330,7 +317,7 @@ loader3.load('./VHS.gltf', (gltf) => {
 const progress = new Array(instanceCount).fill(0); // Progress for each instance
 
 
-manager1.onLoad = manager2.onLoad = function() {
+manager2.onLoad = function() {
     console.log('All textures loaded');
 
     function animate() {
@@ -375,19 +362,7 @@ manager1.onLoad = manager2.onLoad = function() {
         if (elapsedTime >= frameDuration) {
             lastFrameTime = now;
 
-            // Update the first animation
-            if (currentFrame1 < numImages1) {
-                animationMaterial1.map = textures1[currentFrame1];
-                animationMaterial1.emissiveMap = textures1[currentFrame1]; // Update emissiveMap as well
-                animationMaterial1.needsUpdate = true;
-                currentFrame1++;
-            } else if (delayCounter1 > 0) {
-                delayCounter1--;
-            } else {
-                currentFrame1 = 0;
-                delayCounter1 = delayDuration;
-            }
-
+       
             if (currentFrame2 < numImages2) {
                 animationMaterial2.map = textures2[currentFrame2];
                 animationMaterial2.emissiveMap = textures2[currentFrame2]; // Update emissiveMap as well
