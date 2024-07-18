@@ -168,6 +168,7 @@ scene.add(videoPlane);
 
 // Load the GLTF model
 const loader = new GLTFLoader();
+let mixer1; // First mixer
 loader.load('./FMAR_TV_TEST_10.gltf', function (gltf) {
     gltf.scene.scale.multiplyScalar(10 / 1);
     gltf.scene.position.x = 0;
@@ -176,13 +177,13 @@ loader.load('./FMAR_TV_TEST_10.gltf', function (gltf) {
  // Animation mixer to handle animations
  const mixer = new THREE.AnimationMixer(gltf.scene);
     
- // Play all animations
- gltf.animations.forEach((clip) => {
-     mixer.clipAction(clip).play();
- });
-
- // Store mixer for use in the animation loop
- scene.userData.mixer = mixer;
+   // Animation mixer to handle animations
+   mixer1 = new THREE.AnimationMixer(gltf.scene);
+    
+   // Play all animations
+   gltf.animations.forEach((clip) => {
+       mixer1.clipAction(clip).play();
+   });
 });
 
 
@@ -195,32 +196,28 @@ scene.traverse((node) => {
 
 // Load the GLTF model
 const loader6 = new GLTFLoader();
+let mixer2; // Second mixer
 loader6.load('./Vase.gltf', function (gltf) {
     gltf.scene.scale.multiplyScalar(3 / 1);
     gltf.scene.position.set(-0.5, 0, 0.5);  // Set initial position
     scene.add(gltf.scene);
-    // Animation mixer to handle animations
-    const mixer = new THREE.AnimationMixer(gltf.scene);
+     // Animation mixer to handle animations
+     mixer2 = new THREE.AnimationMixer(gltf.scene);
     
-// Play animation by name
-const clip = THREE.AnimationClip.findByName(gltf.animations, 'Animation');
-if (clip) {
-    mixer.clipAction(clip).play();
-}
-
-    // Store mixer for use in the animation loop
-    scene.userData.mixer = mixer;
-});
+     // Play animation by name
+     const clip = THREE.AnimationClip.findByName(gltf.animations, 'Animation');
+     if (clip) {
+         mixer2.clipAction(clip).play();
+     }
+ });
+ 
 
 renderer.shadowMap.enabled = true;
 scene.traverse((node) => {
     if (node.isMesh) {
         node.receiveShadow = true;
     }
-});
-
-const clock2 = new THREE.Clock();
-    
+});    
 
 
 
@@ -345,12 +342,13 @@ manager2.onLoad = function() {
     function animate() {
         requestAnimationFrame(animate);
 
-        const time = clock.getElapsedTime();
+        const delta = clock.getDelta();
+        const elapsedTime = clock.getElapsedTime();
 
-         // Update instance positions, lights, and light spheres
-         for (let i = 0; i < count2; i++) {
+        // Update instance positions, lights, and light spheres
+        for (let i = 0; i < count2; i++) {
             const { x, y, z } = positions[i];
-            const bobbing = Math.sin(time * 2 + i) * 0.1;
+            const bobbing = Math.sin(elapsedTime * 2 + i) * 0.1;
 
             const matrix = new THREE.Matrix4();
             // Apply translation vector
@@ -365,32 +363,27 @@ manager2.onLoad = function() {
         }
         instancedMesh.instanceMatrix.needsUpdate = true;
 
-
-        // Update controls
-        controls.update();
-
         // Add noise distortion to the spotlight's intensity
         spotLight.intensity = intensity + (Math.random() - 0.5) * 0.5;
 
         // Slow down position jitter
         const jitterAmount = 0.0005;
-        spotLight.position.x += (Math.random() - 0.3) * jitterAmount;
-        spotLight.position.y += (Math.random() - 0.3) * jitterAmount;
-        spotLight.position.z += (Math.random() - 0.3) * jitterAmount;
+        spotLight.position.x += (Math.random() - 0.5) * jitterAmount;
+        spotLight.position.y += (Math.random() - 0.5) * jitterAmount;
+        spotLight.position.z += (Math.random() - 0.5) * jitterAmount;
 
+        // Update the animation frame for textures2
         const now = Date.now();
-        const elapsedTime = now - lastFrameTime;
+        const elapsedTimeFrame = now - lastFrameTime;
 
-        if (elapsedTime >= frameDuration) {
+        if (elapsedTimeFrame >= frameDuration) {
             lastFrameTime = now;
 
-       
             if (currentFrame2 < numImages2) {
                 animationMaterial2.map = textures2[currentFrame2];
-                animationMaterial2.emissiveMap = textures2[currentFrame2]; // Update emissiveMap as well
+                animationMaterial2.emissiveMap = textures2[currentFrame2];
                 animationMaterial2.needsUpdate = true;
                 currentFrame2++;
-            
             } else if (delayCounter2 > 0) {
                 delayCounter2--;
             } else {
@@ -399,26 +392,33 @@ manager2.onLoad = function() {
             }
         }
 
-
+        // Update models on the curve
         models.forEach((model, index) => {
             const totalAnimationTime = 10;
-            const progress = (time + index * (totalAnimationTime / instanceCount)) % totalAnimationTime;
+            const progress = (elapsedTime + index * (totalAnimationTime / instanceCount)) % totalAnimationTime;
             const normalizedProgress = progress / totalAnimationTime;
             const point = curve3.getPoint(normalizedProgress);
             model.position.copy(point);
-    
+
             // Smooth rotation or any other effect
             model.rotation.y += 0.01;
-    });
+        });
 
+        // Update the first mixer if it exists
+        if (mixer1) {
+            mixer1.update(delta);
+        }
 
-    // Update the animation mixer if it exists
-    if (scene.userData.mixer) {
-        const delta = clock.getDelta();
-        scene.userData.mixer.update(delta);
-    }    
-    // Render the scene
-    renderer.render(scene, camera);
+        // Update the second mixer if it exists
+        if (mixer2) {
+            mixer2.update(delta);
+        }
+
+        // Update controls
+        controls.update();
+
+        // Render the scene
+        renderer.render
 }
 
     animate();
