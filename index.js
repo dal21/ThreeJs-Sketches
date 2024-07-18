@@ -219,6 +219,7 @@ scene.traverse((node) => {
     }
 });    
 
+let turbineModel;
 
 // Load the GLTF model
 const loader7 = new GLTFLoader();
@@ -227,6 +228,10 @@ loader7.load('./Wind Turbine.gltf', function (gltf) {
     gltf.scene.scale.multiplyScalar(1);
     gltf.scene.position.set(0, 0.1, -0.05);  // Set initial position
     scene.add(gltf.scene);
+
+    // Store reference to the loaded model
+    turbineModel = gltf.scene;
+
      // Animation mixer to handle animations
      mixer3 = new THREE.AnimationMixer(gltf.scene);
     
@@ -249,6 +254,7 @@ for (let i = 0; i < instanceCount1; i++) {
         winmodels.push(instance); // Push instance to the models array
     }
 }
+loader7.onLoad = createInstances;
 
 renderer.shadowMap.enabled = true;
 scene.traverse((node) => {
