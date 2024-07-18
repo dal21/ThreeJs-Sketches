@@ -24,7 +24,7 @@ const initCamera = () => {
     const near = 0.1;
     const far = 100;
     const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-    camera.position.set(0, 0, 2); // Adjusted camera position
+    camera.position.set(0, -0.5, 5); // Adjusted camera position
     return camera;
 };
 
