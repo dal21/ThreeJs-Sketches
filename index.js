@@ -258,8 +258,6 @@ let mixer3; // Second mixer
 loader7.load('./Wind Turbine.gltf', function (gltf) {
     gltf.scene.scale.multiplyScalar(0.4 / 1);
     gltf.scene.position.set(0, -0.4, -0.05);  // Set initial position
-    gltf.scene.rotation.set(2, 2, 2);  // Set initial position
-
     scene.add(gltf.scene);
 
      // Animation mixer to handle animations
@@ -291,7 +289,7 @@ let mixer4; // Second mixer
 loader8.load('./SunSpin.gltf', function (gltf) {
     gltf.scene.scale.multiplyScalar(5 / 1);
     gltf.scene.position.set(-0.75, 0.5, 0);  // Set initial position
-    gltf.scene.rotation.set(0, 0.1, 0);  // Set initial position
+    gltf.scene.rotation.set(0, 2, 0);  // Set initial position
     scene.add(gltf.scene);
      // Animation mixer to handle animations
      mixer4 = new THREE.AnimationMixer(gltf.scene);
