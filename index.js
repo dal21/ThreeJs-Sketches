@@ -291,9 +291,9 @@ scene.traverse((node) => {
 const loader8 = new GLTFLoader();
 let mixer4; // Second mixer
 loader8.load('./SunSpin.gltf', function (gltf) {
-    gltf.scene.scale.multiplyScalar(20 / 1);
+    gltf.scene.scale.multiplyScalar(10 / 1);
     gltf.scene.position.set(-0.75, 0.5, 0);  // Set initial position
-    gltf.scene.rotation.set(0, -2250, 0);  // Set initial position
+    gltf.scene.rotation.set(2, -2, 0);  // Set initial position
     scene.add(gltf.scene);
      // Animation mixer to handle animations
      mixer4 = new THREE.AnimationMixer(gltf.scene);
